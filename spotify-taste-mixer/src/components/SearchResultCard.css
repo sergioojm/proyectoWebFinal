@@ -1,0 +1,25 @@
+
+.result-card {
+  background-color: #181818;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.result-card:hover {
+  transform: scale(1.05);
+}
+
+.result-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.result-card p {
+  color: white;
+  margin-top: 10px;
+  font-weight: bold;
+}

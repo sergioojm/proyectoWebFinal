@@ -1,0 +1,42 @@
+/* src/app/dashboard/page.css */
+.dashboard-container {
+  padding: 20px;
+  background-color: #121212;
+  min-height: 100vh;
+}
+
+h2 {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.artist-card, .track-card {
+  background-color: #181818;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.artist-card:hover, .track-card:hover {
+  transform: scale(1.05);
+}
+
+.artist-image, .track-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.artist-card p, .track-card p {
+  color: white;
+  margin-top: 10px;
+}

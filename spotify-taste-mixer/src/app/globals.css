@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -13,102 +16,15 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  font-family: 'Roboto', sans-serif;
-}
-
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #121212;
-}
-
-.login-content {
-  text-align: center;
-}
-
-.login-button {
-  background-color: #1db954;
-  color: white;
-  padding: 15px 30px;
-  border-radius: 50px;
-  font-size: 18px;
-}
-
-.dashboard-container {
-  padding: 20px;
-  background-color: #1e1e1e;
-}
-
-.top-artists, .top-tracks {
-  margin-bottom: 30px;
-}
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
-}
-
-.artist-card, .track-card {
-  background-color: #181818;
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-}
-
-.artist-image, .track-image, .result-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.search-container {
-  padding: 20px;
-  background-color: #121212;
-  color: white;
-}
-
-.search-input {
-  padding: 10px;
-  background-color: #181818;
-  border-radius: 8px;
-  color: white;
-}
-
-.search-button {
-  background-color: #1db954;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: white;
-  margin-top: 10px;
-}
-
-.logout-button {
-  background-color: #e53935;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: white;
 }

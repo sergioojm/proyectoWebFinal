@@ -1,3 +1,6 @@
+
+import './SearchResultCard.css';
+
 export default function SearchResultCard({ item }) {
   return (
     <div className="result-card">

@@ -1,3 +1,5 @@
+import './PlaylistTrackCard.css';
+
 export default function PlaylistTrackCard({ track }) {
   return (
     <div className="track-card">

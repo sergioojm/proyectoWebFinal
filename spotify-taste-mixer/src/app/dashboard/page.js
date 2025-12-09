@@ -6,6 +6,8 @@ import { getAccessToken } from '@/lib/auth';
 import PlaylistTrackCard from '@/components/PlaylistTrackCard';  // Importamos el componente para las canciones
 import Header from '@/components/Header';  // Importamos el componente Header
 
+import '../dashboard/page.css';
+
 export default function Dashboard() {
   const router = useRouter();
   const [topArtists, setTopArtists] = useState([]);
