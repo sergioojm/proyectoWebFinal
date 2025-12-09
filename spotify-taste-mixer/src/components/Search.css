@@ -1,0 +1,35 @@
+/* src/components/Search.css */
+.search-container {
+  padding: 10px;
+  background-color: #181818;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.search-input {
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.search-results {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  background-color: #242424;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.search-result-item p {
+  margin: 0;
+  color: white;
+}

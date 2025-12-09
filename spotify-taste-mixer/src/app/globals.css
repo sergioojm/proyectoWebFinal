@@ -16,15 +16,57 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-} */
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* src/app/login.css */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212; /* Fondo oscuro */
+}
+
+.login-content {
+  text-align: center;
+  background-color: #1d1d1d;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.login-button {
+  background-color: #1db954; /* Verde de Spotify */
+  color: white;
+  font-size: 18px;
+  padding: 15px 40px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.login-button:hover {
+  background-color: #1ed760; /* Cambia a un verde más claro al hacer hover */
+}
+
+.text-4xl {
+  font-size: 2.5rem; /* Asegura que el tamaño del título sea grande */
+}
+
+.mb-6 {
+  margin-bottom: 20px; /* Espacio debajo del título */
 }
