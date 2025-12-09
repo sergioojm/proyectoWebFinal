@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAccessToken } from '@/lib/auth';
-import { fetchSpotifyData } from '@/lib/spotify';
+import PlaylistTrackCard from '@/components/PlaylistTrackCard';  // Importamos el componente para las canciones
+import Header from '@/components/Header';  // Importamos el componente Header
 
 export default function Dashboard() {
   const router = useRouter();
-  const [playlist, setPlaylist] = useState([]);
+  const [topArtists, setTopArtists] = useState([]);
+  const [topTracks, setTopTracks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,11 +22,21 @@ export default function Dashboard() {
 
     const fetchData = async () => {
       try {
-        // Aquí se hace la llamada para generar la playlist (o personalizarla)
-        const data = await fetchSpotifyData(token);
-        setPlaylist(data);
+        const artistsResponse = await fetch(
+          'https://api.spotify.com/v1/me/top/artists?limit=5',
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const artistsData = await artistsResponse.json();
+        setTopArtists(artistsData.items);
+
+        const tracksResponse = await fetch(
+          'https://api.spotify.com/v1/me/top/tracks?limit=5',
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const tracksData = await tracksResponse.json();
+        setTopTracks(tracksData.items);
       } catch (error) {
-        console.error('Error al obtener playlist', error);
+        console.error('Error al obtener datos', error);
       } finally {
         setLoading(false);
       }
@@ -38,16 +50,31 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
-      <h1 className="text-center text-3xl">Your Playlist</h1>
-      <div className="playlist-container">
-        {playlist.map((track) => (
-          <div key={track.id} className="track-card">
-            <img src={track.albumArt} alt={track.title} />
-            <h3>{track.title}</h3>
-            <p>{track.artist}</p>
-          </div>
-        ))}
+    <div className="dashboard-container">
+      <Header />
+      <div className="top-artists">
+        <h2>Top Artists</h2>
+        <div className="cards-container">
+          {topArtists.map((artist) => (
+            <div key={artist.id} className="artist-card">
+              <img
+                src={artist.images[0]?.url}
+                alt={artist.name}
+                className="artist-image"
+              />
+              <p>{artist.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="top-tracks">
+        <h2>Top Tracks</h2>
+        <div className="cards-container">
+          {topTracks.map((track) => (
+            <PlaylistTrackCard key={track.id} track={track} />
+          ))}
+        </div>
       </div>
     </div>
   );
