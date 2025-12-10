@@ -69,6 +69,14 @@
   gap: 15px;
 }
 
+.no-favorites-selected {
+  color: #999;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin: 0;
+  padding: 10px 0;
+}
+
 .favorite-item {
   display: flex;
   align-items: center;
@@ -154,6 +162,15 @@
   background-color: #666;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.playlist-error {
+  background-color: #e53935;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
 }
 
 .playlist-link {

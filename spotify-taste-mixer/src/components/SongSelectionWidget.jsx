@@ -1,8 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAccessToken } from '@/lib/auth';
-import './SongSelectionWidget.css'; 
+// funciones creadas en un .js aparte para una mejor organizacion
+import { searchTracks, fetchUserProfile, createPlaylistOnSpotify, saveFavoritesToStorage, loadFavoritesFromStorage } from '@/lib/songService';
+import { SearchInput } from './SongSelection/SearchInput';
+import { SearchResults } from './SongSelection/SearchResults';
+import { FavoritesContainer } from './SongSelection/FavoritesContainer';
+import { PlaylistCreationForm } from './SongSelection/PlaylistCreationForm';
+import './SongSelectionWidget.css';
 
 export default function SongSelectionWidget({ addError, selectedArtists, selectedGenres }) {
   const [query, setQuery] = useState('');
@@ -13,112 +18,90 @@ export default function SongSelectionWidget({ addError, selectedArtists, selecte
   const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
   const [playlistLink, setPlaylistLink] = useState('');
   const [userProfile, setUserProfile] = useState(null);
+  const [creationError, setCreationError] = useState(null);
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
+
 
   useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    setFavorites(savedFavorites);
+    const loadInitialData = async () => {
+      const savedFavorites = loadFavoritesFromStorage();
+      setFavorites(savedFavorites);
 
-    const fetchUserProfile = async () => {
-      const token = localStorage.getItem('spotify_token'); 
-
-      if (!token) {
-        console.log('No token found!');
-        return;
-      }
-
-      try {
-        const response = await fetch('https://api.spotify.com/v1/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setUserProfile(data); 
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
+      const profile = await fetchUserProfile();
+      setUserProfile(profile);
     };
 
-    fetchUserProfile();
+    loadInitialData();
   }, []);
 
-  const handleSearch = async (query) => {
-    if (!query) {
-      setSearchResults([]);
-      return;
+  // Handle search with debouncing
+  const handleSearch = async (searchQuery) => {
+    setQuery(searchQuery);
+
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
     }
 
-    setLoading(true);
-
-    const token = getAccessToken();
-    try {
-      // Modificar la búsqueda para incluir filtros de artistas y géneros seleccionados
-      let artistIds = selectedArtists.map(artist => artist.id).join(',');
-      let genreQuery = selectedGenres.join(',');
-
-      const response = await fetch(
-        `https://api.spotify.com/v1/search?q=${query}&type=track&limit=5&seed_artists=${artistIds}&seed_genres=${genreQuery}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const data = await response.json();
-      setSearchResults(data.tracks.items);
-    } catch (error) {
-      console.error('Error searching songs:', error);
-    } finally {
+    const timeout = setTimeout(async () => {
+      setLoading(true);
+      const results = await searchTracks(searchQuery, selectedArtists, selectedGenres);
+      setSearchResults(results);
       setLoading(false);
-    }
+    }, 300);
+
+    setDebounceTimeout(timeout);
   };
 
-  const addToFavorites = (track) => {
+  // Add track to favorites
+  const handleAddToFavorites = (track) => {
     if (favorites.some((favorite) => favorite.id === track.id)) {
-      addError('This track is already in your favorites!');
+      if (addError) {
+        addError('This track is already in your favorites!');
+      }
       return;
     }
 
     const updatedFavorites = [...favorites, track];
     setFavorites(updatedFavorites);
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    saveFavoritesToStorage(updatedFavorites);
   };
 
-  const removeFromFavorites = (trackId) => {
+  // Remove track from favorites
+  const handleRemoveFromFavorites = (trackId) => {
     const updatedFavorites = favorites.filter((track) => track.id !== trackId);
     setFavorites(updatedFavorites);
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    saveFavoritesToStorage(updatedFavorites);
   };
 
-  const createPlaylist = async () => {
+  // Create playlist on Spotify
+  const handleCreatePlaylist = async () => {
+    if (!playlistName.trim()) {
+      setCreationError('Please enter a playlist name');
+      return;
+    }
+
+    if (!userProfile?.id) {
+      setCreationError('User profile not loaded. Please refresh the page.');
+      return;
+    }
+
     setIsCreatingPlaylist(true);
-    const token = getAccessToken();
-    const userId = userProfile?.id || '';
+    setCreationError(null);
 
     try {
-      const playlistResponse = await fetch(
-        `https://api.spotify.com/v1/users/${userId}/playlists`,
-        {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: playlistName,
-            description: 'Playlist created from favorites and filters.',
-            public: true,
-          }),
-        }
-      );
-      const playlistData = await playlistResponse.json();
-
-      const tracks = favorites.map((track) => track.uri);
-      await fetch(
-        `https://api.spotify.com/v1/playlists/${playlistData.id}/tracks`,
-        {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ uris: tracks }),
-        }
+      const result = await createPlaylistOnSpotify(
+        userProfile.id,
+        playlistName,
+        favorites
       );
 
-      setPlaylistLink(`https://open.spotify.com/playlist/${playlistData.id}`);
+      setPlaylistLink(result.url);
+      setPlaylistName('');
     } catch (error) {
-      console.error('Error creating playlist', error);
+      setCreationError(error.message || 'Failed to create playlist');
+      if (addError) {
+        addError(error.message || 'Failed to create playlist');
+      }
     } finally {
       setIsCreatingPlaylist(false);
     }
@@ -126,81 +109,32 @@ export default function SongSelectionWidget({ addError, selectedArtists, selecte
 
   return (
     <div className="song-selection-widget-container">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          handleSearch(e.target.value);
-        }}
+      <SearchInput
+        query={query}
+        onChange={handleSearch}
         placeholder="Search for tracks"
-        className="search-input"
+        loading={loading}
       />
-      {loading && <div className="loading-indicator">Loading...</div>}
 
-      <div className="search-results">
-        {searchResults.map((track) => (
-          <div key={track.id} className="search-result-item">
-            <p>{track.name} - {track.artists?.[0]?.name}</p>
-            <button
-              onClick={() => addToFavorites(track)}
-              className="add-to-favorites"
-            >
-              Add to Selection
-            </button>
-          </div>
-        ))}
-      </div>
+      <SearchResults
+        results={searchResults}
+        onAddToFavorites={handleAddToFavorites}
+      />
 
-      <div className="favorites-container">
-        <h3 className="favorites-title">Your Selection</h3>
-        <div className="favorites-list">
-          {favorites.map((track) => (
-            <div key={track.id} className="favorite-item">
-              <img
-                src={track.album.images[0]?.url}
-                alt={track.name}
-                className="favorite-item-image"
-              />
-              <div className="favorite-item-info">
-                <p className="favorite-item-name">{track.name}</p>
-                <p className="favorite-item-artist">{track.artists?.[0]?.name}</p>
-              </div>
-              <button
-                onClick={() => removeFromFavorites(track.id)}
-                className="remove-favorite"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      <FavoritesContainer
+        favorites={favorites}
+        onRemove={handleRemoveFromFavorites}
+      />
 
-      <div className="create-playlist-container">
-        <input
-          type="text"
-          value={playlistName}
-          onChange={(e) => setPlaylistName(e.target.value)}
-          placeholder="Enter playlist name"
-          className="playlist-name-input"
-        />
-        <button
-          onClick={createPlaylist}
-          disabled={isCreatingPlaylist || favorites.length === 0}
-          className="create-playlist-button"
-        >
-          {isCreatingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
-        </button>
-
-        {playlistLink && (
-          <div className="playlist-link">
-            <a href={playlistLink} target="_blank" rel="noopener noreferrer">
-              View Playlist
-            </a>
-          </div>
-        )}
-      </div>
+      <PlaylistCreationForm
+        playlistName={playlistName}
+        onNameChange={setPlaylistName}
+        isCreating={isCreatingPlaylist}
+        isFavoritesEmpty={favorites.length === 0}
+        onCreatePlaylist={handleCreatePlaylist}
+        playlistLink={playlistLink}
+        creationError={creationError}
+      />
     </div>
   );
 }
