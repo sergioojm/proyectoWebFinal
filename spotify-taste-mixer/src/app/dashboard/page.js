@@ -9,7 +9,7 @@ import DecadeWidget from '@/components/DecadeWidget';
 import PopularityWidget from '@/components/PopularityWidget'; 
 import UserPlaylists from '@/components/UserPlaylists';
 import UserStats from '@/components/UserStats'; 
-import SongSelectionWidget from '@/components/SongSelectionWidget';
+import PlaylistStatsWidget from '@/components/PlaylistStatsWidget';
 
 import '../dashboard/page.css';
 
@@ -39,6 +39,7 @@ export default function Dashboard() {
 
       
       <div className="widgets-container">
+        <PlaylistStatsWidget></PlaylistStatsWidget>
         <GenreWidget
           genres={['Rock', 'Pop', 'Jazz', 'Classical']}
           onSelect={(genre) => setSelectedGenres([...selectedGenres, genre])}
@@ -47,18 +48,9 @@ export default function Dashboard() {
         <PopularityWidget onSelect={(popularity) => setSelectedPopularity(popularity)} />
       </div>
 
-      {/* <SongSelectionWidget></SongSelectionWidget> */}
     
-      <UserPlaylists
-        selectedGenres={selectedGenres}
-        selectedDecade={selectedDecade}
-        selectedPopularity={selectedPopularity}
-      />
-
-{/*      
-      <CreatePlaylist recommendedTracks={} /> */}
-
-     
+    
+      <UserPlaylists/>  
       <UserStats />
     </div>
   );

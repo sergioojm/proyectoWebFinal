@@ -76,7 +76,7 @@ export default function UserStats() {
   return (
     <div className="user-stats-container p-4 bg-gray-900 text-white">
       <h2 className="text-2xl mb-4">Your Top 10 Artists</h2>
-      
+
       {topArtists.length > 0 ? (
         <div className="top-artists-list">
           {topArtists.map((artist) => (
