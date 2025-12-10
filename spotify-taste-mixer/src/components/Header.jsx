@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 
 export default function Header() {
 
-   const [userProfile, setUserProfile] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {

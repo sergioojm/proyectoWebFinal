@@ -12,10 +12,37 @@ export default function SongSelectionWidget() {
   const [playlistName, setPlaylistName] = useState('');
   const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
   const [playlistLink, setPlaylistLink] = useState('');
+   const [userProfile, setUserProfile] = useState(null);
+
 
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(savedFavorites);
+  }, []);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem('spotify_token'); // Suponiendo que el token esté almacenado en localStorage
+
+      if (!token) {
+        console.log('No token found!');
+        return;
+      }
+
+      try {
+        const response = await fetch('https://api.spotify.com/v1/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setUserProfile(data); // Almacenamos la información del usuario
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
   }, []);
 
   // Función para manejar la búsqueda
@@ -67,7 +94,7 @@ export default function SongSelectionWidget() {
   const createPlaylist = async () => {
     setIsCreatingPlaylist(true);
     const token = getAccessToken();
-    const userId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || ''; // Suponiendo que el ID del usuario está disponible
+    const userId = userProfile?.id || '';
 
     try {
       // Paso 1: Crear la playlist
