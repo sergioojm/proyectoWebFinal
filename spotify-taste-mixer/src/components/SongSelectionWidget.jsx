@@ -128,7 +128,7 @@ export default function SongSelectionWidget() {
               onClick={() => addToFavorites(track)}
               className="add-to-favorites bg-green-500 px-4 py-2 rounded-md text-white"
             >
-              Add to Favorites
+              Add to Selection
             </button>
           </div>
         ))}
@@ -136,7 +136,7 @@ export default function SongSelectionWidget() {
 
       {/* Favoritos */}
       <div className="favorites-container mt-4">
-        <h3 className="text-white text-xl">Your Favorites</h3>
+        <h3 className="text-white text-xl">Your Selection</h3>
         <div className="favorites-list">
           {favorites.map((track) => (
             <div key={track.id} className="favorite-item bg-gray-700 p-3 rounded-md mb-3 flex items-center gap-4">
