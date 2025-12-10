@@ -1,0 +1,55 @@
+/* src/components/UserStats.css */
+.user-stats-container {
+  padding: 20px;
+  background-color: #121212;
+  color: white;
+  border-radius: 10px;
+}
+
+.top-artists-list, .top-tracks-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.top-artist-item, .top-track-item {
+  background-color: #181818;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.artist-image, .track-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.artist-info, .track-info {
+  flex-grow: 1;
+}
+
+.artist-info h3, .track-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.artist-info p, .track-info p {
+  font-size: 1rem;
+  color: #bbb;
+}
+
+@media (max-width: 768px) {
+  .top-artists-list, .top-tracks-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-artists-list, .top-tracks-list {
+    grid-template-columns: 1fr;
+  }
+}
