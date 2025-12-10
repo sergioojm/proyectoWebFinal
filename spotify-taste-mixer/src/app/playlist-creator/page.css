@@ -1,0 +1,49 @@
+/* src/app/dashboard/page.css */
+.dashboard-container {
+  padding: 20px;
+  background-color: #121212;
+  min-height: 100vh;
+}
+
+.widgets-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.top-artists, .top-tracks, .top-50-global, .recommendations-container {
+  margin-bottom: 40px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.artist-card, .track-card {
+  background-color: #181818;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.artist-image, .track-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .widgets-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .widgets-container {
+    grid-template-columns: 1fr;
+  }
+}

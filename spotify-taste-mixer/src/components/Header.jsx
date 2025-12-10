@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import './Header.css';
-import Search from '@/components/Search';
 import { logout } from '@/lib/auth';
 import { useState, useEffect } from 'react';
 
@@ -43,8 +42,8 @@ export default function Header() {
       </div>
 
       <nav className="navigation flex items-center gap-4">
-        <Link href="/" className="nav-link hover:text-green-500">Home</Link>
-        <Search />
+        <Link href="/dashboard" className="nav-link hover:text-green-500">Home</Link>
+        <Link href="/playlist-creator" className="nav-link hover:text-green-500">Creator</Link>
 
         {userProfile && (
           <div className="user-profile flex items-center gap-2">

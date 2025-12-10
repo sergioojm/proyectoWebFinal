@@ -1,0 +1,106 @@
+/* src/components/SongSelectionWidget.css */
+.song-selection-widget-container {
+  padding: 20px;
+  background-color: #121212;
+  border-radius: 10px;
+  color: white;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+.search-result-item {
+  background-color: #444;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.add-to-favorites {
+  background-color: #1db954;
+  padding: 8px 16px;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.add-to-favorites:hover {
+  background-color: #1ed760;
+}
+
+.favorites-container {
+  margin-top: 30px;
+}
+
+.favorite-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #444;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.favorite-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.remove-favorite {
+  background-color: #e53935;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-playlist-container {
+  margin-top: 30px;
+}
+
+.playlist-name-input {
+  width: 100%;
+  padding: 12px;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.create-playlist-button {
+  background-color: #1db954;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.create-playlist-button:hover {
+  background-color: #1ed760;
+}
+
+.playlist-link {
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+.playlist-link a {
+  color: #1db954;
+  text-decoration: none;
+}
+
+.playlist-link a:hover {
+  text-decoration: underline;
+}

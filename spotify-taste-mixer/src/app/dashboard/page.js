@@ -3,14 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAccessToken } from '@/lib/auth';
-import Header from '@/components/Header'; // Importamos el componente Header
-import GenreWidget from '@/components/GenreWidget'; // Importamos el widget de géneros
-import DecadeWidget from '@/components/DecadeWidget'; // Importamos el widget de décadas
-import PopularityWidget from '@/components/PopularityWidget'; // Importamos el widget de popularidad
-import Favorites from '@/components/Favorites'; // Importamos la sección de favoritos
-import UserPlaylists from '@/components/UserPlaylists'; // Importamos el componente de recomendaciones personalizadas
-import CreatePlaylist from '@/components/CreatePlaylist'; // Importamos el componente para crear playlists
-import UserStats from '@/components/UserStats'; // Importamos el componente de Top 50 global
+import Header from '@/components/Header';
+import GenreWidget from '@/components/GenreWidget'; 
+import DecadeWidget from '@/components/DecadeWidget'; 
+import PopularityWidget from '@/components/PopularityWidget'; 
+import UserPlaylists from '@/components/UserPlaylists';
+import UserStats from '@/components/UserStats'; 
+import SongSelectionWidget from '@/components/SongSelectionWidget';
 
 import '../dashboard/page.css';
 
@@ -38,7 +37,6 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <Header />
 
-      <Favorites /> 
       
       <div className="widgets-container">
         <GenreWidget
@@ -49,6 +47,7 @@ export default function Dashboard() {
         <PopularityWidget onSelect={(popularity) => setSelectedPopularity(popularity)} />
       </div>
 
+      {/* <SongSelectionWidget></SongSelectionWidget> */}
     
       <UserPlaylists
         selectedGenres={selectedGenres}
