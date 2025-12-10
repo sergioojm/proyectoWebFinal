@@ -243,4 +243,4 @@ For issues or questions, please check the documentation or review the API integr
 ---
 
 **Version**: 0.1.0  
-**Last Updated**: December 2024
+**Last Updated**: December 2025
