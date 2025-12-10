@@ -13,13 +13,16 @@
 
 .genre-dropdown {
   width: 100%;
+  max-width: 500px;
   padding: 12px;
   background-color: #333;
   color: white;
   border-radius: 8px;
   margin-bottom: 20px;
-  min-height: 100px;
-  resize: vertical;
+  height: 150px;
+  overflow-y: auto;
+  border: 1px solid #555;
+  font-size: 1rem;
 }
 
 .selected-genres {
@@ -32,6 +35,14 @@
   margin-bottom: 10px;
 }
 
+.no-genres-selected {
+  color: #999;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin: 0;
+  padding: 10px 0;
+}
+
 .selected-genres-list {
   display: flex;
   flex-wrap: wrap;
@@ -39,12 +50,14 @@
 }
 
 .selected-genre-item {
-  background-color: #444;
-  padding: 10px;
-  border-radius: 8px;
+  background-color: #1db954;
+  padding: 8px 12px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  color: white;
+  font-size: 0.95rem;
 }
 
 .remove-genre-button {

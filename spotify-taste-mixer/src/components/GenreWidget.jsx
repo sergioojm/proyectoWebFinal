@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import './GenreWidget.css';
 
-export default function GenreWidget({ onSelect, selectedItems = [] }) {
+export default function GenreWidget({ onSelect, selectedItems }) {
   const genres = [
     'acoustic', 'afrobeat', 'alt-rock', 'alternative', 'ambient', 'anime',
     'black-metal', 'bluegrass', 'blues', 'bossanova', 'brazil', 'breakbeat',
@@ -25,7 +25,7 @@ export default function GenreWidget({ onSelect, selectedItems = [] }) {
 
   const handleSelectGenre = (event) => {
     const selectedGenres = Array.from(event.target.selectedOptions, option => option.value);
-    onSelect(selectedGenres);
+    onSelect(selectedGenres);  
   };
 
   return (
@@ -45,21 +45,27 @@ export default function GenreWidget({ onSelect, selectedItems = [] }) {
         ))}
       </select>
 
-      {selectedItems.length > 0 && (
-        <div className="selected-genres">
-          <h3>Selected Genres</h3>
+      <div className="selected-genres">
+        <h3 className="selected-genres-title">Selected Genres</h3>
+        {selectedItems.length > 0 ? (
           <div className="selected-genres-list">
             {selectedItems.map((genre) => (
               <div key={genre} className="selected-genre-item">
-                <p>{genre}</p>
-                <button onClick={() => onSelect(selectedItems.filter(item => item !== genre))} className="remove-genre-button">
-                  X
+                <span>{genre}</span>
+                <button 
+                  onClick={() => onSelect(selectedItems.filter(item => item !== genre))} 
+                  className="remove-genre-button"
+                  aria-label={`Remove ${genre}`}
+                >
+                  ×
                 </button>
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="no-genres-selected">No genres selected</p>
+        )}
+      </div>
     </div>
   );
 }

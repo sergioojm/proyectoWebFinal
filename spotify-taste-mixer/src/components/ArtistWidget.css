@@ -46,6 +46,14 @@
   margin-bottom: 10px;
 }
 
+.no-artists-selected {
+  color: #999;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin: 0;
+  padding: 10px 0;
+}
+
 .selected-artists-list {
   display: flex;
   flex-wrap: wrap;

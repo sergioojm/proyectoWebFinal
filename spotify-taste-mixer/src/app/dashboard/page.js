@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAccessToken } from '@/lib/auth';
 import Header from '@/components/Header';
@@ -12,8 +12,6 @@ import '../dashboard/page.css';
 export default function Dashboard() {
   const router = useRouter();
 
-
-  
 
   useEffect(() => {
     const token = getAccessToken();

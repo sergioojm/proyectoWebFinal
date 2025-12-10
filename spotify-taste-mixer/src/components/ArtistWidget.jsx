@@ -89,26 +89,31 @@ export default function ArtistWidget({ onSelect, selectedItems }) {
 
       <div className="selected-artists">
         <h3 className="selected-artists-title">Selected Artists</h3>
-        <div className="selected-artists-list">
-          {selectedItems.map((artist) => (
-            <div key={artist.id} className="selected-artist-item">
-              <img
-                src={artist.images[0]?.url || 'default-image.png'}
-                alt={artist.name}
-                className="selected-artist-image"
-              />
-              <div className="selected-artist-info">
-                <p>{artist.name}</p>
+        {selectedItems.length > 0 ? (
+          <div className="selected-artists-list">
+            {selectedItems.map((artist) => (
+              <div key={artist.id} className="selected-artist-item">
+                <img
+                  src={artist.images[0]?.url || 'default-image.png'}
+                  alt={artist.name}
+                  className="selected-artist-image"
+                />
+                <div className="selected-artist-info">
+                  <p>{artist.name}</p>
+                </div>
+                <button
+                  onClick={() => handleRemoveArtist(artist.id)}
+                  className="remove-artist-button"
+                  aria-label={`Remove ${artist.name}`}
+                >
+                  ×
+                </button>
               </div>
-              <button
-                onClick={() => handleRemoveArtist(artist.id)}
-                className="remove-artist-button"
-              >
-                X
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="no-artists-selected">No artists selected</p>
+        )}
       </div>
     </div>
   );
