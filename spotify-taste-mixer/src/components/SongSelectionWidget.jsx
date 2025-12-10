@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import './SongSelectionWidget.css'; // Estilos específicos del widget
+import ErrorManager from './ErrorManager';
 
 // Componente principal del widget
-export default function SongSelectionWidget() {
+export default function SongSelectionWidget({ addError }) {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -73,7 +74,7 @@ export default function SongSelectionWidget() {
   // Función para agregar canciones a favoritos
   const addToFavorites = (track) => {
     if (favorites.some((favorite) => favorite.id === track.id)) {
-      alert('This track is already in your favorites!');
+      addError('This track is already in your favorites!');
       return;
     }
 
@@ -132,6 +133,7 @@ export default function SongSelectionWidget() {
 
   return (
     <div className="song-selection-widget-container p-4 bg-gray-800 rounded-lg">
+
       {/* Barra de búsqueda */}
       <input
         type="text"
