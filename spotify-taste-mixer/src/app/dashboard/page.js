@@ -9,7 +9,7 @@ import GenreWidget from '@/components/GenreWidget'; // Importamos el widget de g
 import DecadeWidget from '@/components/DecadeWidget'; // Importamos el widget de décadas
 import PopularityWidget from '@/components/PopularityWidget'; // Importamos el widget de popularidad
 import Favorites from '@/components/Favorites'; // Importamos la sección de favoritos
-import Recommendations from '@/components/Recomendations'; // Importamos el componente de recomendaciones personalizadas
+import UserPlaylists from '@/components/UserPlaylists'; // Importamos el componente de recomendaciones personalizadas
 import CreatePlaylist from '@/components/CreatePlaylist'; // Importamos el componente para crear playlists
 import Top50Global from '@/components/Top50Global'; // Importamos el componente de Top 50 global
 
@@ -85,7 +85,7 @@ export default function Dashboard() {
       </div>
 
       {/* Mostrar recomendaciones basadas en las preferencias */}
-      <Recommendations
+      <UserPlaylists
         selectedGenres={selectedGenres}
         selectedDecade={selectedDecade}
         selectedPopularity={selectedPopularity}
