@@ -132,9 +132,7 @@ export default function SongSelectionWidget({ addError }) {
   };
 
   return (
-    <div className="song-selection-widget-container p-4 bg-gray-800 rounded-lg">
-
-
+    <div className="song-selection-widget-container">
       <input
         type="text"
         value={query}
@@ -143,18 +141,17 @@ export default function SongSelectionWidget({ addError }) {
           handleSearch(e.target.value);
         }}
         placeholder="Search for tracks"
-        className="search-input p-2 rounded-md bg-gray-700 text-white"
+        className="search-input"
       />
-      {loading && <div>Loading...</div>}
+      {loading && <div className="loading-indicator">Loading...</div>}
 
-      
-      <div className="search-results mt-4">
+      <div className="search-results">
         {searchResults.map((track) => (
-          <div key={track.id} className="search-result-item p-2 bg-gray-700 rounded-md text-white mb-2">
+          <div key={track.id} className="search-result-item">
             <p>{track.name} - {track.artists?.[0]?.name}</p>
             <button
               onClick={() => addToFavorites(track)}
-              className="add-to-favorites bg-green-500 px-4 py-2 rounded-md text-white"
+              className="add-to-favorites"
             >
               Add to Selection
             </button>
@@ -162,24 +159,23 @@ export default function SongSelectionWidget({ addError }) {
         ))}
       </div>
 
-      
-      <div className="favorites-container mt-4">
-        <h3 className="text-white text-xl">Your Selection</h3>
+      <div className="favorites-container">
+        <h3 className="favorites-title">Your Selection</h3>
         <div className="favorites-list">
           {favorites.map((track) => (
-            <div key={track.id} className="favorite-item bg-gray-700 p-3 rounded-md mb-3 flex items-center gap-4">
+            <div key={track.id} className="favorite-item">
               <img
                 src={track.album.images[0]?.url}
                 alt={track.name}
-                className="favorite-item-image w-16 h-16 object-cover rounded-md"
+                className="favorite-item-image"
               />
-              <div className="text-white flex-grow">
-                <p>{track.name}</p>
-                <p>{track.artists?.[0]?.name}</p>
+              <div className="favorite-item-info">
+                <p className="favorite-item-name">{track.name}</p>
+                <p className="favorite-item-artist">{track.artists?.[0]?.name}</p>
               </div>
               <button
                 onClick={() => removeFromFavorites(track.id)}
-                className="remove-favorite bg-red-600 px-4 py-2 rounded-md text-white"
+                className="remove-favorite"
               >
                 Remove
               </button>
@@ -188,27 +184,25 @@ export default function SongSelectionWidget({ addError }) {
         </div>
       </div>
 
-      
-      <div className="create-playlist-container mt-4">
+      <div className="create-playlist-container">
         <input
           type="text"
           value={playlistName}
           onChange={(e) => setPlaylistName(e.target.value)}
           placeholder="Enter playlist name"
-          className="playlist-name-input p-2 rounded-md bg-gray-700 text-white"
+          className="playlist-name-input"
         />
         <button
           onClick={createPlaylist}
           disabled={isCreatingPlaylist || favorites.length === 0}
-          className="create-playlist-button bg-blue-500 px-4 py-2 rounded-md text-white mt-2"
+          className="create-playlist-button"
         >
           {isCreatingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
         </button>
 
-        
         {playlistLink && (
-          <div className="playlist-link mt-2">
-            <a href={playlistLink} target="_blank" rel="noopener noreferrer" className="text-green-400">
+          <div className="playlist-link">
+            <a href={playlistLink} target="_blank" rel="noopener noreferrer">
               View Playlist
             </a>
           </div>

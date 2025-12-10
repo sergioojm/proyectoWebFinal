@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAccessToken } from '@/lib/auth';
 import Header from '@/components/Header';
-import GenreWidget from '@/components/GenreWidget'; 
-import DecadeWidget from '@/components/DecadeWidget'; 
-import PopularityWidget from '@/components/PopularityWidget'; 
+import ArtistWidget from '@/components/ArtistWidget';
+import GenreWidget from '@/components/GenreWidget';
 import UserPlaylists from '@/components/UserPlaylists';
 import UserStats from '@/components/UserStats'; 
 import PlaylistStatsWidget from '@/components/PlaylistStatsWidget';
+import ErrorManager from '@/components/ErrorManager';
 
 import '../dashboard/page.css';
 
@@ -17,10 +17,9 @@ export default function Dashboard() {
   const router = useRouter();
 
 
-  // Estados para las preferencias de los widgets
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [selectedDecade, setSelectedDecade] = useState(null);
-  const [selectedPopularity, setSelectedPopularity] = useState([0, 100]);
+  const [selectedArtists, setSelectedArtists] = useState([]);
+ 
 
   useEffect(() => {
     const token = getAccessToken();
@@ -31,21 +30,28 @@ export default function Dashboard() {
     }
   }, [router]);
 
+   const [errors, setErrors] = useState([]);
 
+    const addError = (message) => {
+      setErrors((prevErrors) => [...prevErrors, message]);
+    };
 
   return (
     <div className="dashboard-container">
       <Header />
-
+      <ErrorManager errors={errors}/>
       
       <div className="widgets-container">
-        <PlaylistStatsWidget></PlaylistStatsWidget>
-        <GenreWidget
-          genres={['Rock', 'Pop', 'Jazz', 'Classical']}
-          onSelect={(genre) => setSelectedGenres([...selectedGenres, genre])}
+        <PlaylistStatsWidget addError={addError}></PlaylistStatsWidget>
+        <ArtistWidget
+          onSelect={setSelectedArtists}
+          selectedItems={selectedArtists}
         />
-        <DecadeWidget onSelect={(decade) => setSelectedDecade(decade)} />
-        <PopularityWidget onSelect={(popularity) => setSelectedPopularity(popularity)} />
+        <GenreWidget
+          selectedItems={selectedGenres}
+          onSelect={setSelectedGenres}
+        />
+        
       </div>
 
     

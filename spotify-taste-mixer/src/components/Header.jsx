@@ -36,17 +36,17 @@ export default function Header() {
 
 
   return (
-    <header className="header-container flex justify-between items-center p-4 bg-black text-white">
-      <div className="logo-container flex-1">
-        <h1 className="header-logo text-2xl font-bold text-green-500">Spotify Taste Mixer</h1>
+    <header className="header-container">
+      <div className="logo-container">
+        <h1 className="header-logo">Spotify Taste Mixer</h1>
       </div>
 
-      <nav className="navigation flex items-center gap-4">
-        <Link href="/dashboard" className="nav-link hover:text-green-500">Home</Link>
-        <Link href="/playlist-creator" className="nav-link hover:text-green-500">Creator</Link>
+      <nav className="navigation">
+        <Link href="/dashboard" className="nav-link">Home</Link>
+        <Link href="/playlist-creator" className="nav-link">Creator</Link>
 
         {userProfile && (
-          <div className="user-profile flex items-center gap-2">
+          <div className="user-profile">
             <img
               src={userProfile.images[0]?.url || 'default-avatar.png'}
               alt={userProfile.display_name}
@@ -62,7 +62,7 @@ export default function Header() {
             logout();
             window.location.reload();
           }}
-          className="logout-button bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+          className="logout-button"
         >
           Logout
         </button>

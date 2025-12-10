@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import './PlaylistStatsWidget.css';
 
-export default function PlaylistStatsWidget() {
+export default function PlaylistStatsWidget({ addError }) {
   const [playlists, setPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState('');
   const [playlistStats, setPlaylistStats] = useState(null);
   const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -16,14 +17,21 @@ export default function PlaylistStatsWidget() {
       if (!token) return;
 
       setLoading(true);
+     
+
       try {
         const response = await fetch('https://api.spotify.com/v1/me/playlists', {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch playlists');
+        }
+
         const data = await response.json();
         setPlaylists(data.items);
       } catch (error) {
-        console.error('Error fetching playlists:', error);
+        addError('Failed to load playlists');
       } finally {
         setLoading(false);
       }
@@ -33,6 +41,12 @@ export default function PlaylistStatsWidget() {
   }, []);
 
   const handlePlaylistSelect = async (playlistId) => {
+
+    if (playlistId === '') {
+      setPlaylistStats(null);
+      return;
+    }
+
     setSelectedPlaylist(playlistId);
     setLoading(true);
 
@@ -43,6 +57,11 @@ export default function PlaylistStatsWidget() {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         }
       );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch playlist data');
+      }
+
       const data = await response.json();
 
       if (data) {
@@ -57,7 +76,7 @@ export default function PlaylistStatsWidget() {
         setPlaylistStats(null);
       }
     } catch (error) {
-      console.error('Error fetching playlist stats:', error);
+      addError('Failed to load playlist stats');
       setPlaylistStats(null);
     } finally {
       setLoading(false);
@@ -68,7 +87,6 @@ export default function PlaylistStatsWidget() {
     <div className="widget-container">
       <h2 className="widget-title">Select a Playlist</h2>
 
-      {loading && <div className="text-white">Loading playlists...</div>}
 
       <select
         className="playlist-dropdown"
@@ -82,6 +100,9 @@ export default function PlaylistStatsWidget() {
           </option>
         ))}
       </select>
+
+      {loading && <div className="text-white">Loading playlists...</div>}
+
 
       {playlistStats && (
         <div className="playlist-stats mt-4">

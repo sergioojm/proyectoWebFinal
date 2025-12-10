@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import './UserStats.css';
-import Rating from './Ratings';
+
 
 export default function UserStats() {
   const [topArtists, setTopArtists] = useState([]);
@@ -114,7 +114,6 @@ export default function UserStats() {
                 <h3 className="text-xl">{track.name}</h3>
                 <p>{track.artists?.[0]?.name}</p>
                 <p>Popularity: {track.popularity}</p>
-                <Rating track={track}/>
               </div>
             </div>
           ))}

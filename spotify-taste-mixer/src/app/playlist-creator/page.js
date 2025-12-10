@@ -6,7 +6,6 @@ import { getAccessToken } from '@/lib/auth';
 import Header from '@/components/Header'; 
 import ErrorManager from '@/components/ErrorManager';
 import SongSelectionWidget from '@/components/SongSelectionWidget';
-
 import '../playlist-creator/page.css';
 
 export default function playlistCreator() {
@@ -36,7 +35,7 @@ export default function playlistCreator() {
         <ErrorManager errors={errors}/>
       <SongSelectionWidget addError={addError}></SongSelectionWidget>
     
-
+  
     </div>
   );
 }

@@ -12,6 +12,18 @@
   background-color: #333;
   color: white;
   border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.loading-indicator {
+  color: white;
+  padding: 10px 0;
+  text-align: center;
 }
 
 .search-results {
@@ -19,10 +31,11 @@
 }
 
 .search-result-item {
-  background-color: #444;
+  background-color: #333;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 10px;
+  color: white;
 }
 
 .add-to-favorites {
@@ -31,6 +44,9 @@
   border-radius: 5px;
   margin-top: 10px;
   cursor: pointer;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
 }
 
 .add-to-favorites:hover {
@@ -41,11 +57,23 @@
   margin-top: 30px;
 }
 
+.favorites-title {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .favorite-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background-color: #444;
+  gap: 15px;
+  background-color: #333;
   padding: 12px;
   border-radius: 8px;
 }
@@ -55,6 +83,23 @@
   height: 50px;
   object-fit: cover;
   border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.favorite-item-info {
+  flex-grow: 1;
+  color: white;
+}
+
+.favorite-item-name {
+  margin: 0;
+  font-weight: 500;
+}
+
+.favorite-item-artist {
+  margin: 5px 0 0 0;
+  color: #bbb;
+  font-size: 0.9rem;
 }
 
 .remove-favorite {
@@ -62,6 +107,12 @@
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+}
+.remove-favorite:hover {
+  background-color: #d32f2f;
 }
 
 .create-playlist-container {
@@ -75,6 +126,12 @@
   color: white;
   border-radius: 8px;
   margin-bottom: 15px;
+  border: none;
+  font-size: 1rem;
+}
+
+.playlist-name-input::placeholder {
+  color: #999;
 }
 
 .create-playlist-button {
@@ -85,10 +142,18 @@
   font-size: 1rem;
   cursor: pointer;
   width: 100%;
+  border: none;
+  font-weight: 500;
 }
 
-.create-playlist-button:hover {
+.create-playlist-button:hover:not(:disabled) {
   background-color: #1ed760;
+}
+
+.create-playlist-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .playlist-link {

@@ -11,9 +11,17 @@
   margin-bottom: 10px;
 }
 
+.search-input {
+  width: 100%;
+  padding: 12px;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
 .genre-list {
-  list-style-type: none;
-  padding: 0;
+  margin-top: 10px;
 }
 
 .genre-item {
@@ -25,4 +33,20 @@
 
 .genre-item:hover {
   background-color: #1db954;
+}
+
+.genre-item.selected {
+  background-color: #1db954;
+}
+
+.no-results {
+  color: #bbb;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .genre-list {
+    padding-left: 0;
+    list-style: none;
+  }
 }
