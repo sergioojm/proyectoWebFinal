@@ -9,7 +9,7 @@ export default function Rating({ track }) {
 
   const handleRating = (newRating) => {
     setRating(newRating);
-    localStorage.setItem(`rating-${track.id}`, newRating); // Guardamos la calificación en localStorage
+    localStorage.setItem(`rating-${track.id}`, newRating); 
   };
 
   return (

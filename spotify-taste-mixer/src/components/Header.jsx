@@ -11,7 +11,7 @@ export default function Header() {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const token = localStorage.getItem('spotify_token'); // Suponiendo que el token esté almacenado en localStorage
+      const token = localStorage.getItem('spotify_token'); 
 
       if (!token) {
         console.log('No token found!');
@@ -25,7 +25,7 @@ export default function Header() {
           },
         });
         const data = await response.json();
-        setUserProfile(data); // Almacenamos la información del usuario
+        setUserProfile(data); 
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }

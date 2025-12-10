@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
-import './SongSelectionWidget.css'; // Estilos específicos del widget
-import ErrorManager from './ErrorManager';
+import './SongSelectionWidget.css'; 
 
-// Componente principal del widget
+
+
 export default function SongSelectionWidget({ addError }) {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -17,14 +17,14 @@ export default function SongSelectionWidget({ addError }) {
   const [userProfile, setUserProfile] = useState(null);
 
  
-  // Cargar perfil de usuario desde Spotify
+  
   useEffect(() => {
 
     const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(savedFavorites);
 
     const fetchUserProfile = async () => {
-      const token = localStorage.getItem('spotify_token'); // Suponiendo que el token está almacenado en localStorage
+      const token = localStorage.getItem('spotify_token'); 
 
       if (!token) {
         console.log('No token found!');
@@ -38,7 +38,7 @@ export default function SongSelectionWidget({ addError }) {
           },
         });
         const data = await response.json();
-        setUserProfile(data); // Almacenamos la información del usuario
+        setUserProfile(data); 
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -47,7 +47,7 @@ export default function SongSelectionWidget({ addError }) {
     fetchUserProfile();
   }, []);
 
-  // Función para manejar la búsqueda de canciones
+  
   const handleSearch = async (query) => {
     if (!query) {
       setSearchResults([]);
@@ -71,7 +71,7 @@ export default function SongSelectionWidget({ addError }) {
     }
   };
 
-  // Función para agregar canciones a favoritos
+  
   const addToFavorites = (track) => {
     if (favorites.some((favorite) => favorite.id === track.id)) {
       addError('This track is already in your favorites!');
@@ -83,7 +83,7 @@ export default function SongSelectionWidget({ addError }) {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
-  // Función para eliminar una canción de los favoritos
+ 
   const removeFromFavorites = (trackId) => {
     const updatedFavorites = favorites.filter((track) => track.id !== trackId);
     setFavorites(updatedFavorites);
@@ -97,7 +97,7 @@ export default function SongSelectionWidget({ addError }) {
     const userId = userProfile?.id || '';
 
     try {
-      // Paso 1: Crear la playlist
+      
       const playlistResponse = await fetch(
         `https://api.spotify.com/v1/users/${userId}/playlists`,
         {
@@ -112,7 +112,7 @@ export default function SongSelectionWidget({ addError }) {
       );
       const playlistData = await playlistResponse.json();
 
-      // Paso 2: Agregar canciones a la playlist
+      
       const tracks = favorites.map((track) => track.uri);
       await fetch(
         `https://api.spotify.com/v1/playlists/${playlistData.id}/tracks`,
@@ -134,7 +134,7 @@ export default function SongSelectionWidget({ addError }) {
   return (
     <div className="song-selection-widget-container p-4 bg-gray-800 rounded-lg">
 
-      {/* Barra de búsqueda */}
+
       <input
         type="text"
         value={query}
@@ -147,7 +147,7 @@ export default function SongSelectionWidget({ addError }) {
       />
       {loading && <div>Loading...</div>}
 
-      {/* Resultados de la búsqueda */}
+      
       <div className="search-results mt-4">
         {searchResults.map((track) => (
           <div key={track.id} className="search-result-item p-2 bg-gray-700 rounded-md text-white mb-2">
@@ -162,7 +162,7 @@ export default function SongSelectionWidget({ addError }) {
         ))}
       </div>
 
-      {/* Favoritos */}
+      
       <div className="favorites-container mt-4">
         <h3 className="text-white text-xl">Your Selection</h3>
         <div className="favorites-list">
@@ -188,7 +188,7 @@ export default function SongSelectionWidget({ addError }) {
         </div>
       </div>
 
-      {/* Crear Playlist */}
+      
       <div className="create-playlist-container mt-4">
         <input
           type="text"
@@ -205,7 +205,7 @@ export default function SongSelectionWidget({ addError }) {
           {isCreatingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
         </button>
 
-        {/* Mostrar enlace a la playlist creada */}
+        
         {playlistLink && (
           <div className="playlist-link mt-2">
             <a href={playlistLink} target="_blank" rel="noopener noreferrer" className="text-green-400">
