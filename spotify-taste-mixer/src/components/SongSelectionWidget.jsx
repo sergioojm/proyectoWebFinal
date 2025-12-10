@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import './SongSelectionWidget.css'; // Estilos específicos del widget
 
+// Componente principal del widget
 export default function SongSelectionWidget() {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -12,17 +13,17 @@ export default function SongSelectionWidget() {
   const [playlistName, setPlaylistName] = useState('');
   const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
   const [playlistLink, setPlaylistLink] = useState('');
-   const [userProfile, setUserProfile] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
 
-
+ 
+  // Cargar perfil de usuario desde Spotify
   useEffect(() => {
+
     const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(savedFavorites);
-  }, []);
 
-  useEffect(() => {
     const fetchUserProfile = async () => {
-      const token = localStorage.getItem('spotify_token'); // Suponiendo que el token esté almacenado en localStorage
+      const token = localStorage.getItem('spotify_token'); // Suponiendo que el token está almacenado en localStorage
 
       if (!token) {
         console.log('No token found!');
@@ -45,7 +46,7 @@ export default function SongSelectionWidget() {
     fetchUserProfile();
   }, []);
 
-  // Función para manejar la búsqueda
+  // Función para manejar la búsqueda de canciones
   const handleSearch = async (query) => {
     if (!query) {
       setSearchResults([]);
@@ -55,7 +56,6 @@ export default function SongSelectionWidget() {
     setLoading(true);
 
     const token = getAccessToken();
-
     try {
       const response = await fetch(
         `https://api.spotify.com/v1/search?q=${query}&type=track&limit=5`,
@@ -64,7 +64,7 @@ export default function SongSelectionWidget() {
       const data = await response.json();
       setSearchResults(data.tracks.items);
     } catch (error) {
-      console.error('Error al buscar', error);
+      console.error('Error al buscar canciones', error);
     } finally {
       setLoading(false);
     }
@@ -72,7 +72,6 @@ export default function SongSelectionWidget() {
 
   // Función para agregar canciones a favoritos
   const addToFavorites = (track) => {
-    // Verificamos si la canción ya está en los favoritos
     if (favorites.some((favorite) => favorite.id === track.id)) {
       alert('This track is already in your favorites!');
       return;
@@ -90,7 +89,7 @@ export default function SongSelectionWidget() {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
-  // Función para crear la playlist
+  // Función para crear la playlist en Spotify
   const createPlaylist = async () => {
     setIsCreatingPlaylist(true);
     const token = getAccessToken();
