@@ -1,20 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAccessToken } from '@/lib/auth';
-import PlaylistTrackCard from '@/components/PlaylistTrackCard'; // Importamos el componente para las canciones
+import PlaylistTrackCard from '@/components/PlaylistTrackCard'; // Para mostrar las canciones
 import Header from '@/components/Header'; // Importamos el componente Header
 import GenreWidget from '@/components/GenreWidget'; // Importamos el widget de géneros
 import DecadeWidget from '@/components/DecadeWidget'; // Importamos el widget de décadas
 import PopularityWidget from '@/components/PopularityWidget'; // Importamos el widget de popularidad
 import '../dashboard/page.css';
+import Favorites from '@/components/Favorites';
+
 
 export default function Dashboard() {
   const router = useRouter();
   const [topArtists, setTopArtists] = useState([]);
   const [topTracks, setTopTracks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Estados para las preferencias de los widgets
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedDecade, setSelectedDecade] = useState(null);
+  const [selectedPopularity, setSelectedPopularity] = useState([0, 100]);
 
   useEffect(() => {
     const token = getAccessToken();
@@ -53,15 +60,24 @@ export default function Dashboard() {
     return <div>Loading...</div>;
   }
 
+  // Función para generar la playlist basada en las preferencias
+  const generatePlaylist = () => {
+    // Aquí deberías agregar la lógica para generar la playlist en función de las selecciones
+    // por ejemplo, usando la API de Spotify o filtrando los `topTracks` por las preferencias
+  };
+
   return (
     <div className="dashboard-container">
       <Header />
-      
-      {/* Usamos los widgets aquí */}
+
+      <Favorites /> 
       <div className="widgets-container">
-        <GenreWidget genres={['Rock', 'Pop', 'Jazz', 'Classical']} onSelect={(genre) => console.log(`Genre selected: ${genre}`)} />
-        <DecadeWidget onSelect={(decade) => console.log(`Decade selected: ${decade}`)} />
-        <PopularityWidget onSelect={(popularity) => console.log(`Popularity range selected: ${popularity}`)} />
+        <GenreWidget
+          genres={['Rock', 'Pop', 'Jazz', 'Classical']}
+          onSelect={(genre) => setSelectedGenres([...selectedGenres, genre])}
+        />
+        <DecadeWidget onSelect={(decade) => setSelectedDecade(decade)} />
+        <PopularityWidget onSelect={(popularity) => setSelectedPopularity(popularity)} />
       </div>
 
       <div className="top-artists">

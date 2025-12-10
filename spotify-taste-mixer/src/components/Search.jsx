@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import './Search.css';
 
@@ -8,9 +8,11 @@ export default function Search() {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('favorites')) || []);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem('favorites')) || []
+  );
 
-  
+  // Función para manejar la búsqueda
   const handleSearch = async (query) => {
     if (!query) {
       setSearchResults([]);
@@ -35,12 +37,25 @@ export default function Search() {
     }
   };
 
- 
+  // Función para agregar canciones a favoritos
   const addToFavorites = (track) => {
+    // Comprobar si la canción ya está en los favoritos
+    const isFavorite = favorites.some((favorite) => favorite.id === track.id);
+    
+    if (isFavorite) {
+      alert('This track is already in your favorites!');
+      return; // No agregar si ya está en favoritos
+    }
+
     const updatedFavorites = [...favorites, track];
     setFavorites(updatedFavorites);
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); 
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));  // Guardamos en localStorage
   };
+
+  // Usamos useEffect para actualizar el estado de los favoritos cada vez que cambian
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));  // Guardamos en localStorage cuando cambia
+  }, [favorites]);
 
   return (
     <div className="search-container flex flex-col gap-4 p-4 bg-gray-800 rounded-lg">
