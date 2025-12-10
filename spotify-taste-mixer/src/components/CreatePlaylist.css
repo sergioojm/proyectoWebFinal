@@ -1,0 +1,44 @@
+/* src/components/CreatePlaylist.css */
+.create-playlist-container {
+  background-color: #121212;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.playlist-name-input {
+  width: 100%;
+  padding: 12px;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.create-playlist-button {
+  background-color: #1db954;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.create-playlist-button:hover {
+  background-color: #1ed760;
+}
+
+.playlist-link {
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+.playlist-link a {
+  color: #1db954;
+  text-decoration: none;
+}
+
+.playlist-link a:hover {
+  text-decoration: underline;
+}

@@ -8,9 +8,12 @@ import Header from '@/components/Header'; // Importamos el componente Header
 import GenreWidget from '@/components/GenreWidget'; // Importamos el widget de géneros
 import DecadeWidget from '@/components/DecadeWidget'; // Importamos el widget de décadas
 import PopularityWidget from '@/components/PopularityWidget'; // Importamos el widget de popularidad
-import '../dashboard/page.css';
-import Favorites from '@/components/Favorites';
+import Favorites from '@/components/Favorites'; // Importamos la sección de favoritos
+import Recommendations from '@/components/Recomendations'; // Importamos el componente de recomendaciones personalizadas
+import CreatePlaylist from '@/components/CreatePlaylist'; // Importamos el componente para crear playlists
+import Top50Global from '@/components/Top50Global'; // Importamos el componente de Top 50 global
 
+import '../dashboard/page.css';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -70,7 +73,8 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <Header />
 
-      <Favorites /> 
+      <Favorites /> {/* Mostramos la sección de favoritos */}
+      
       <div className="widgets-container">
         <GenreWidget
           genres={['Rock', 'Pop', 'Jazz', 'Classical']}
@@ -79,6 +83,19 @@ export default function Dashboard() {
         <DecadeWidget onSelect={(decade) => setSelectedDecade(decade)} />
         <PopularityWidget onSelect={(popularity) => setSelectedPopularity(popularity)} />
       </div>
+
+      {/* Mostrar recomendaciones basadas en las preferencias */}
+      <Recommendations
+        selectedGenres={selectedGenres}
+        selectedDecade={selectedDecade}
+        selectedPopularity={selectedPopularity}
+      />
+
+     
+      <CreatePlaylist recommendedTracks={topTracks} />
+
+     
+      <Top50Global />
 
       <div className="top-artists">
         <h2>Top Artists</h2>

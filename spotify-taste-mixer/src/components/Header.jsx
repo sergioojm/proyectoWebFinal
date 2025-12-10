@@ -4,8 +4,38 @@ import Link from 'next/link';
 import './Header.css';
 import Search from '@/components/Search';
 import { logout } from '@/lib/auth';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
+
+   const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem('spotify_token'); // Suponiendo que el token esté almacenado en localStorage
+
+      if (!token) {
+        console.log('No token found!');
+        return;
+      }
+
+      try {
+        const response = await fetch('https://api.spotify.com/v1/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setUserProfile(data); // Almacenamos la información del usuario
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+
   return (
     <header className="header-container flex justify-between items-center p-4 bg-black text-white">
       <div className="logo-container flex-1">
@@ -14,7 +44,20 @@ export default function Header() {
 
       <nav className="navigation flex items-center gap-4">
         <Link href="/" className="nav-link hover:text-green-500">Home</Link>
-        <Search /> {/* Componente de búsqueda */}
+        <Search />
+
+        {userProfile && (
+          <div className="user-profile flex items-center gap-2">
+            <img
+              src={userProfile.images[0]?.url || 'default-avatar.png'}
+              alt={userProfile.display_name}
+              className="user-profile-image w-10 h-10 rounded-full"
+            />
+            <p>{userProfile.display_name}</p>
+          </div>
+        )}
+
+
         <button
           onClick={() => {
             logout();
