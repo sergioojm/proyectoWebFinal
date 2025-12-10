@@ -6,6 +6,9 @@ import { getAccessToken } from '@/lib/auth';
 import Header from '@/components/Header'; 
 import ErrorManager from '@/components/ErrorManager';
 import SongSelectionWidget from '@/components/SongSelectionWidget';
+import ArtistWidget from '@/components/ArtistWidget';
+import GenreWidget from '@/components/GenreWidget';
+import PlaylistStatsWidget from '@/components/PlaylistStatsWidget';
 import '../playlist-creator/page.css';
 
 export default function playlistCreator() {
@@ -21,7 +24,9 @@ export default function playlistCreator() {
   }, [router]);
 
   const [errors, setErrors] = useState([]);
-
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedArtists, setSelectedArtists] = useState([]);
+ 
 
   const addError = (message) => {
     setErrors((prevErrors) => [...prevErrors, message]);
@@ -32,8 +37,21 @@ export default function playlistCreator() {
     <div className="dashboard-container">
       <Header />
 
-        <ErrorManager errors={errors}/>
-      <SongSelectionWidget addError={addError}></SongSelectionWidget>
+      <div className="widgets-container">
+         <PlaylistStatsWidget addError={addError}></PlaylistStatsWidget>
+        <ArtistWidget
+          onSelect={setSelectedArtists}
+          selectedItems={selectedArtists}
+        />
+        <GenreWidget
+          selectedItems={selectedGenres}
+          onSelect={setSelectedGenres}
+        />
+        
+      </div>
+
+      <ErrorManager errors={errors}/>
+      <SongSelectionWidget addError={addError} selectedArtists={selectedArtists} selectedGenres={selectedGenres}></SongSelectionWidget>
     
   
     </div>

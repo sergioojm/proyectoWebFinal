@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import './SongSelectionWidget.css'; 
 
-
-
-export default function SongSelectionWidget({ addError }) {
+export default function SongSelectionWidget({ addError, selectedArtists, selectedGenres }) {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -16,10 +14,7 @@ export default function SongSelectionWidget({ addError }) {
   const [playlistLink, setPlaylistLink] = useState('');
   const [userProfile, setUserProfile] = useState(null);
 
- 
-  
   useEffect(() => {
-
     const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(savedFavorites);
 
@@ -47,7 +42,6 @@ export default function SongSelectionWidget({ addError }) {
     fetchUserProfile();
   }, []);
 
-  
   const handleSearch = async (query) => {
     if (!query) {
       setSearchResults([]);
@@ -58,20 +52,23 @@ export default function SongSelectionWidget({ addError }) {
 
     const token = getAccessToken();
     try {
+      // Modificar la búsqueda para incluir filtros de artistas y géneros seleccionados
+      let artistIds = selectedArtists.map(artist => artist.id).join(',');
+      let genreQuery = selectedGenres.join(',');
+
       const response = await fetch(
-        `https://api.spotify.com/v1/search?q=${query}&type=track&limit=5`,
+        `https://api.spotify.com/v1/search?q=${query}&type=track&limit=5&seed_artists=${artistIds}&seed_genres=${genreQuery}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await response.json();
       setSearchResults(data.tracks.items);
     } catch (error) {
-      console.error('Error al buscar canciones', error);
+      console.error('Error searching songs:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  
   const addToFavorites = (track) => {
     if (favorites.some((favorite) => favorite.id === track.id)) {
       addError('This track is already in your favorites!');
@@ -83,21 +80,18 @@ export default function SongSelectionWidget({ addError }) {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
- 
   const removeFromFavorites = (trackId) => {
     const updatedFavorites = favorites.filter((track) => track.id !== trackId);
     setFavorites(updatedFavorites);
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
-  // Función para crear la playlist en Spotify
   const createPlaylist = async () => {
     setIsCreatingPlaylist(true);
     const token = getAccessToken();
     const userId = userProfile?.id || '';
 
     try {
-      
       const playlistResponse = await fetch(
         `https://api.spotify.com/v1/users/${userId}/playlists`,
         {
@@ -105,14 +99,13 @@ export default function SongSelectionWidget({ addError }) {
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: playlistName,
-            description: 'Playlist created from favorites.',
+            description: 'Playlist created from favorites and filters.',
             public: true,
           }),
         }
       );
       const playlistData = await playlistResponse.json();
 
-      
       const tracks = favorites.map((track) => track.uri);
       await fetch(
         `https://api.spotify.com/v1/playlists/${playlistData.id}/tracks`,

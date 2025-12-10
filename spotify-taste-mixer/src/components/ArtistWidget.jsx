@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { getAccessToken } from '@/lib/auth';
-import './ArtistsWidget.css';
+import './ArtistWidget.css';
 
 export default function ArtistWidget({ onSelect, selectedItems }) {
   const [query, setQuery] = useState('');
@@ -21,7 +21,7 @@ export default function ArtistWidget({ onSelect, selectedItems }) {
 
     try {
       const response = await fetch(
-        `https://api.spotify.com/v1/search?q=${query}&type=artist&limit=1`, 
+        `https://api.spotify.com/v1/search?q=${query}&type=artist&limit=5`, // Limitamos a 5 resultados
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await response.json();
@@ -44,12 +44,18 @@ export default function ArtistWidget({ onSelect, selectedItems }) {
     setDebounceTimeout(
       setTimeout(() => {
         handleSearch(newQuery);
-      }, 300) 
+      }, 300) // 300 ms debounce
     );
   };
 
   const handleSelectArtist = (artist) => {
-    onSelect([...selectedItems, artist]);
+    if (!selectedItems.some((item) => item.id === artist.id)) {
+      onSelect([...selectedItems, artist]);
+    }
+  };
+
+  const handleRemoveArtist = (artistId) => {
+    onSelect(selectedItems.filter((item) => item.id !== artistId));
   };
 
   return (
@@ -67,19 +73,42 @@ export default function ArtistWidget({ onSelect, selectedItems }) {
       {loading && <div className="loading-text">Loading...</div>}
 
       <div className="search-results">
-        {searchResults.length === 0 && !loading && <div className="no-results">No artists found</div>}
+        {searchResults.length === 0 && !loading && (
+          <div className="no-results">No artists found</div>
+        )}
         {searchResults.map((artist) => (
-          <div key={artist.id} className="search-result-item" onClick={() => handleSelectArtist(artist)}>
-            <img
-              src={artist.images[0]?.url || 'default-image.png'}
-              alt={artist.name}
-              className="artist-image"
-            />
-            <div className="artist-info">
-              <h3>{artist.name}</h3>
-            </div>
+          <div
+            key={artist.id}
+            className="search-result-item"
+            onClick={() => handleSelectArtist(artist)}
+          >
+            <p>{artist.name}</p>
           </div>
         ))}
+      </div>
+
+      <div className="selected-artists">
+        <h3 className="selected-artists-title">Selected Artists</h3>
+        <div className="selected-artists-list">
+          {selectedItems.map((artist) => (
+            <div key={artist.id} className="selected-artist-item">
+              <img
+                src={artist.images[0]?.url || 'default-image.png'}
+                alt={artist.name}
+                className="selected-artist-image"
+              />
+              <div className="selected-artist-info">
+                <p>{artist.name}</p>
+              </div>
+              <button
+                onClick={() => handleRemoveArtist(artist.id)}
+                className="remove-artist-button"
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

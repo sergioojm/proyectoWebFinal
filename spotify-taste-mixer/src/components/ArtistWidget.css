@@ -1,4 +1,4 @@
-/* src/components/GenreWidget.css */
+/* src/components/ArtistWidget.css */
 .widget-container {
   padding: 20px;
   background-color: #181818;
@@ -11,34 +11,48 @@
   margin-bottom: 10px;
 }
 
-.genre-dropdown {
+.search-input {
   width: 100%;
   padding: 12px;
   background-color: #333;
   color: white;
   border-radius: 8px;
   margin-bottom: 20px;
-  min-height: 100px;
-  resize: vertical;
 }
 
-.selected-genres {
+.search-results {
   margin-top: 20px;
 }
 
-.selected-genres-title {
+.search-result-item {
+  background-color: #444;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-result-item:hover {
+  background-color: #1db954;
+}
+
+.selected-artists {
+  margin-top: 20px;
+}
+
+.selected-artists-title {
   font-size: 1.2rem;
   color: white;
   margin-bottom: 10px;
 }
 
-.selected-genres-list {
+.selected-artists-list {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
 }
 
-.selected-genre-item {
+.selected-artist-item {
   background-color: #444;
   padding: 10px;
   border-radius: 8px;
@@ -47,7 +61,18 @@
   gap: 10px;
 }
 
-.remove-genre-button {
+.selected-artist-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.selected-artist-info {
+  color: white;
+}
+
+.remove-artist-button {
   background-color: #e53935;
   color: white;
   border-radius: 50%;
@@ -62,6 +87,6 @@
   transition: background-color 0.3s;
 }
 
-.remove-genre-button:hover {
+.remove-artist-button:hover {
   background-color: #d32f2f;
 }
