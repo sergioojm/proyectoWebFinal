@@ -1,33 +1,27 @@
 'use client';
 
-import { useState } from 'react';  // Para manejar los resultados
+import Link from 'next/link';
 import './Header.css';
+import Search from '@/components/Search';
 import { logout } from '@/lib/auth';
-import Search from '@/components/Search';  // Importamos el componente de búsqueda
-
 
 export default function Header() {
-  const [searchResults, setSearchResults] = useState([]);  // Guardar los resultados de búsqueda
-
-  // Función para recibir los resultados de búsqueda
-  const handleSearchResults = (results) => {
-    setSearchResults(results);
-  };
-
   return (
-    <header className="header-container">
-      <div className="logo-container">
-        <h1 className="header-logo">Spotify Taste Mixer</h1>
+    <header className="header-container flex justify-between items-center p-4 bg-black text-white">
+      <div className="logo-container flex-1">
+        <h1 className="header-logo text-2xl font-bold text-green-500">Spotify Taste Mixer</h1>
       </div>
 
-      <nav className="navigation">
-        
-        <Search onResults={handleSearchResults} /> 
-
-        <button onClick={() => {
+      <nav className="navigation flex items-center gap-4">
+        <Link href="/" className="nav-link hover:text-green-500">Home</Link>
+        <Search /> {/* Componente de búsqueda */}
+        <button
+          onClick={() => {
             logout();
             window.location.reload();
-        }} className="logout-button">
+          }}
+          className="logout-button bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+        >
           Logout
         </button>
       </nav>

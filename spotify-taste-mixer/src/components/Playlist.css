@@ -1,0 +1,48 @@
+/* src/components/Playlist.css */
+.playlist-container {
+  padding: 20px;
+  background-color: #121212;
+}
+
+.playlist-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.playlist-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.playlist-track {
+  background-color: #181818;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.track-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.favorite-button, .remove-button {
+  background-color: #1db954;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.remove-button {
+  background-color: #e53935;
+}
+
+.favorite-button:hover, .remove-button:hover {
+  opacity: 0.8;
+}

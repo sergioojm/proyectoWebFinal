@@ -3,10 +3,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  padding: 20px 30px;
   background-color: #121212;
   color: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .logo-container {
@@ -16,9 +15,7 @@
 .header-logo {
   font-size: 2rem;
   font-weight: bold;
-  color: #1db954; /* Verde de Spotify */
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  color: #1db954;
 }
 
 .navigation {
@@ -31,12 +28,10 @@
   text-decoration: none;
   color: white;
   font-size: 1.2rem;
-  font-weight: 600;
-  transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #1db954; /* Cambia el color al pasar el mouse */
+  color: #1db954;
 }
 
 .logout-button {
@@ -46,10 +41,4 @@
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  border: none;
-}
-
-.logout-button:hover {
-  background-color: #d32f2f;
 }

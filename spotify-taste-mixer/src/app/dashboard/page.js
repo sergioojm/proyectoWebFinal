@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAccessToken } from '@/lib/auth';
-import PlaylistTrackCard from '@/components/PlaylistTrackCard';  // Importamos el componente para las canciones
-import Header from '@/components/Header';  // Importamos el componente Header
-
+import PlaylistTrackCard from '@/components/PlaylistTrackCard'; // Importamos el componente para las canciones
+import Header from '@/components/Header'; // Importamos el componente Header
+import GenreWidget from '@/components/GenreWidget'; // Importamos el widget de géneros
+import DecadeWidget from '@/components/DecadeWidget'; // Importamos el widget de décadas
+import PopularityWidget from '@/components/PopularityWidget'; // Importamos el widget de popularidad
 import '../dashboard/page.css';
 
 export default function Dashboard() {
@@ -54,6 +56,14 @@ export default function Dashboard() {
   return (
     <div className="dashboard-container">
       <Header />
+      
+      {/* Usamos los widgets aquí */}
+      <div className="widgets-container">
+        <GenreWidget genres={['Rock', 'Pop', 'Jazz', 'Classical']} onSelect={(genre) => console.log(`Genre selected: ${genre}`)} />
+        <DecadeWidget onSelect={(decade) => console.log(`Decade selected: ${decade}`)} />
+        <PopularityWidget onSelect={(popularity) => console.log(`Popularity range selected: ${popularity}`)} />
+      </div>
+
       <div className="top-artists">
         <h2>Top Artists</h2>
         <div className="cards-container">

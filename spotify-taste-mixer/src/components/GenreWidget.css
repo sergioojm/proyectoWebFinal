@@ -1,0 +1,28 @@
+/* src/components/GenreWidget.css */
+.widget-container {
+  padding: 20px;
+  background-color: #181818;
+  border-radius: 10px;
+}
+
+.widget-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.genre-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.genre-item {
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.genre-item:hover {
+  background-color: #1db954;
+}

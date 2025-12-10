@@ -1,60 +1,73 @@
 'use client';
 
 import { useState } from 'react';
-import { getAccessToken } from '@/lib/auth';  // Para obtener el token
-import './Search.css'; // Importamos los estilos del componente
+import { getAccessToken } from '@/lib/auth';
+import './Search.css';
 
-export default function Search({ onResults }) {
-  const [query, setQuery] = useState('');  // Estado para la búsqueda
-  const [searchResults, setSearchResults] = useState([]);  // Estado para los resultados de búsqueda
-  const [loading, setLoading] = useState(false);  // Estado de carga
+export default function Search() {
+  const [query, setQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('favorites')) || []);
 
-  // Función para manejar la búsqueda
+  
   const handleSearch = async (query) => {
     if (!query) {
-      setSearchResults([]);  // Si no hay búsqueda, limpiamos los resultados
+      setSearchResults([]);
       return;
     }
 
-    setLoading(true);  // Activamos el estado de carga
+    setLoading(true);
 
-    const token = getAccessToken();  // Obtenemos el token
+    const token = getAccessToken();
 
     try {
       const response = await fetch(
-        `https://api.spotify.com/v1/search?q=${query}&type=track,artist&limit=5`,  // Buscamos artistas y canciones
+        `https://api.spotify.com/v1/search?q=${query}&type=track,artist&limit=5`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await response.json();
-      setSearchResults(data.tracks.items);  // Establecemos los resultados de la búsqueda
-      onResults(data.tracks.items);  // Llamamos a onResults para pasar los resultados al componente padre
+      setSearchResults(data.tracks.items);
     } catch (error) {
       console.error('Error al buscar', error);
     } finally {
-      setLoading(false);  // Desactivamos el estado de carga
+      setLoading(false);
     }
   };
 
+ 
+  const addToFavorites = (track) => {
+    const updatedFavorites = [...favorites, track];
+    setFavorites(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); 
+  };
+
   return (
-    <div className="search-container">
+    <div className="search-container flex flex-col gap-4 p-4 bg-gray-800 rounded-lg">
       <input
         type="text"
         value={query}
         onChange={(e) => {
-          setQuery(e.target.value);  // Actualizamos el valor del input
-          handleSearch(e.target.value);  // Llamamos a la función de búsqueda
+          setQuery(e.target.value);
+          handleSearch(e.target.value);
         }}
         placeholder="Search for tracks or artists"
-        className="search-input"
+        className="search-input p-2 rounded-md bg-gray-700 text-white"
       />
-      {loading && <div className="loading">Loading...</div>}  {/* Indicador de carga */}
-      
+      {loading && <div className="loading text-white">Loading...</div>}
+
       {query && !loading && (
-        <div className="search-results">
+        <div className="search-results mt-4 max-h-60 overflow-y-auto">
           {searchResults.map((item) => (
-            <div key={item.id} className="search-result-item">
+            <div key={item.id} className="search-result-item p-2 bg-gray-700 rounded-md text-white mb-2">
               <p>{item.name}</p>
               <p>{item.artists?.[0]?.name}</p>
+              <button
+                onClick={() => addToFavorites(item)}
+                className="add-to-favorites bg-green-500 px-4 py-2 rounded-md text-white mt-2"
+              >
+                Add to Favorites
+              </button>
             </div>
           ))}
         </div>

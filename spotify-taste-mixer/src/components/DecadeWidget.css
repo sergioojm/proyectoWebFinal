@@ -1,0 +1,30 @@
+/* src/components/DecadeWidget.css */
+.widget-container {
+  padding: 20px;
+  background-color: #181818;
+  border-radius: 10px;
+}
+
+.widget-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.decade-select {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.decade-button {
+  padding: 10px 15px;
+  background-color: #333;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.decade-button:hover {
+  background-color: #1db954;
+}
